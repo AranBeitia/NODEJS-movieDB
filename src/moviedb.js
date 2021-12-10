@@ -1,38 +1,44 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
-const { Command } = require("commander");
+// const { Command } = require('commander')
 
-const program = new Command();
-program.version("0.0.1");
+// const program = new Command()
+// program.version('0.0.1')
 
-program
-  .command("get-persons")
-  .description("Make a network request to fetch most popular persons")
-  .action(function handleAction() {
-    console.log("hello-world");
-  });
+// program
+// 	.command('get-persons')
+// 	.description('Make a network request to fetch most popular persons')
+// 	.action(function handleAction() {
+// 		console.log('hello-world')
+// 	})
 
-program
-  .command("get-person")
-  .description("Make a network request to fetch the data of a single person")
-  .action(function handleAction() {
-    console.log("hello-world");
-  });
+// program
+// 	.command('get-person')
+// 	.description('Make a network request to fetch the data of a single person')
+// 	.action(function handleAction() {
+// 		console.log('hello-world')
+// 	})
 
-program
-  .command("get-movies")
-  .description("Make a network request to fetch movies")
-  .action(function handleAction() {
-    console.log("hello-world");
-  });
+// program
+// 	.command('get-movies')
+// 	.description('Make a network request to fetch movies')
+// 	.action(function handleAction() {
+// 		console.log('hello-world')
+// 	})
 
-program
-  .command("get-movie")
-  .description("Make a network request to fetch the data of a single person")
-  .action(function handleAction() {
-    console.log("hello-world");
-  });
+// program
+// 	.command('get-movie')
+// 	.description('Make a network request to fetch the data of a single person')
+// 	.action(function handleAction() {
+// 		console.log('hello-world')
+// 	})
 
-// error on unknown commands
+// // error on unknown commands
 
-program.parse(process.argv);
+// program.parse(process.argv)
+
+require('dotenv').config({ path: 'variables.env' })
+
+const key = process.env.API_KEY
+
+console.log(key)
