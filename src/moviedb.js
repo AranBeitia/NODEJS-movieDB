@@ -57,8 +57,38 @@ program
 program
 	.command('get-person')
 	.description('Make a network request to fetch the data of a single person')
-	.action(function handleAction() {
-		console.log('hello-world')
+	.requiredOption('-i --id <id>', 'The id of the person')
+	.action((programOptions) => {
+		console.log(programOptions.id)
+		const requestOptions = requestMethods.getOptionsPerson(
+			'person',
+			programOptions.id,
+			apiKey
+		)
+
+		const request = https.request(requestOptions, (response) => {
+			const spinner = ora('Fetching the person data...')
+			console.log(`statusCode: ${response.statusCode}`)
+			let body = ''
+
+			response
+				.on('data', (data) => {
+					body += data
+					spinner.start()
+				})
+				.on('end', () => {
+					let jsonResponse = JSON.parse(body)
+					styles.stylePersonData(jsonResponse)
+					spinner.succeed('Person data loaded')
+				})
+		})
+
+		request.on('error', (error) => {
+			console.log(error)
+			spinner.fail('personita failed')
+		})
+
+		request.end()
 	})
 
 program

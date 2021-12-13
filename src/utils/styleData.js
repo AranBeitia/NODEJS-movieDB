@@ -26,4 +26,39 @@ function styleData(dataRes) {
 	})
 }
 
-module.exports = { styleData }
+function stylePersonData(dataResult) {
+	log(dataResult)
+	log(chalk.white('\n---------------------------------------'))
+	log(chalk.white(`Person: \n`))
+	log(chalk.white(`Id: ${dataResult.id}`))
+	log(chalk.blue(`Name: ${dataResult.name}`))
+	log(
+		chalk.white(
+			`Birthdate: ${dataResult.birthday} ${chalk.grey('|')} ${
+				dataResult.place_of_birth
+			}`
+		)
+	)
+
+	if (dataResult.known_for_department === 'Acting') {
+		log(`Department: ${chalk.magenta(dataResult.known_for_department)}`)
+	} else {
+		log('Department:')
+	}
+
+	log(`Biography: ${chalk.blue.bold(dataResult.biography)}`)
+
+	if (dataResult.also_known_as != undefined) {
+		log('\n')
+		log(chalk.white('Also known as\n'))
+		const alias = dataResult.also_known_as
+		alias.forEach((item) => {
+			log(`${chalk.white(item)}\n`)
+		})
+	} else {
+		log('\n')
+		log(`${chalk.yellow(dataResult.name)} doesn’t have any alternate names\n`)
+	}
+}
+
+module.exports = { styleData, stylePersonData }
