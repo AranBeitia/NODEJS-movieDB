@@ -7,6 +7,7 @@
 		"cli app",
 		"assembler school"
 	],
+	"type": "module",
 	"author": "Dani Lucaci <dani@assemblerschool.com>",
 	"license": "MIT",
 	"private": true,
@@ -20,6 +21,7 @@
 		"chalk": "^5.0.0",
 		"commander": "^8.3.0",
 		"dotenv": "^10.0.0",
+		"node-fetch": "^3.1.0",
 		"node-notifier": "^10.0.0",
 		"ora": "^6.0.1"
 	}

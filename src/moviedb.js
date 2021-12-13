@@ -1,10 +1,12 @@
 // #!/usr/bin/env node
-require('dotenv').config({ path: 'variables.env' })
 
+import dotenv from 'dotenv'
+import fetch from 'node-fetch'
+import { Command } from 'commander'
+dotenv.config({ path: 'variables.env' })
 const key = process.env.API_KEY
-console.log(key)
 
-const { Command } = require('commander')
+// const { Command } = require('commander')
 const program = new Command()
 program.version('0.0.1')
 
@@ -12,7 +14,10 @@ program
 	.command('get-persons')
 	.description('Make a network request to fetch most popular persons')
 	.action(function handleAction() {
-		console.log('hello-world')
+		fetch(`https://api.themoviedb.org/3/person/popular?page=1&api_key=${key}`)
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((error) => console.log(error))
 	})
 
 program
