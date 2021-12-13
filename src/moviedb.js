@@ -1,23 +1,52 @@
 // #!/usr/bin/env node
 
-import dotenv from 'dotenv'
-import fetch from 'node-fetch'
-import { Command } from 'commander'
-dotenv.config({ path: 'variables.env' })
-const key = process.env.API_KEY
+const { Command } = require('commander')
+const dotenv = require('dotenv')
+const https = require('https')
+const requestMethods = require('./utils/requestMethods')
 
-// const { Command } = require('commander')
+dotenv.config({ path: 'variables.env' })
+const apiKey = process.env.API_KEY
+
 const program = new Command()
 program.version('0.0.1')
 
 program
 	.command('get-persons')
 	.description('Make a network request to fetch most popular persons')
-	.action(function handleAction() {
-		fetch(`https://api.themoviedb.org/3/person/popular?page=1&api_key=${key}`)
-			.then((response) => response.json())
-			.then((data) => console.log(data))
-			.catch((error) => console.log(error))
+	.requiredOption('-p, --popular', 'fetch popular people')
+	.requiredOption(
+		'--page <number>',
+		'The page of persons data results to fetch'
+	)
+	// programOptions returns an object with all the required options
+	.action((programOptions) => {
+		const requestOptions = requestMethods.getOptions(
+			'person/popular',
+			programOptions.page,
+			apiKey
+		)
+
+		const request = https.request(requestOptions, (response) => {
+			console.log(`statusCode: ${response.statusCode}`)
+			let body = []
+			response
+				.on('data', (data) => {
+					body.push(data)
+					console.log(body)
+				})
+				.on('end', () => {
+					body = Buffer.concat(body).toString()
+					let jsonResponse = JSON.parse(body)
+					console.table(jsonResponse.results)
+				})
+		})
+
+		request.on('error', (error) => {
+			console.log(error)
+		})
+
+		request.end()
 	})
 
 program
