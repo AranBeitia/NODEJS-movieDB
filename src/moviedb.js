@@ -4,8 +4,10 @@ const { Command } = require('commander')
 const dotenv = require('dotenv')
 const https = require('https')
 const requestMethods = require('./utils/requestMethods')
-
+const styles = require('./utils/styleData')
 dotenv.config({ path: 'variables.env' })
+const ora = require('ora')
+
 const apiKey = process.env.API_KEY
 
 const program = new Command()
@@ -28,17 +30,22 @@ program
 		)
 
 		const request = https.request(requestOptions, (response) => {
+			const spinner = ora('loading pipol')
 			console.log(`statusCode: ${response.statusCode}`)
-			let body = []
+			let body = ''
 			response
 				.on('data', (data) => {
-					body.push(data)
-					console.log(body)
+					spinner.start()
+					body += data
 				})
 				.on('end', () => {
-					body = Buffer.concat(body).toString()
+					// setTimeout(() => {
+					// }, 2000)
 					let jsonResponse = JSON.parse(body)
-					console.table(jsonResponse.results)
+					const dataRes = jsonResponse.results
+					console.table(dataRes)
+					styles.styleData(dataRes)
+					spinner.stop()
 				})
 		})
 
