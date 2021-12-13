@@ -39,18 +39,16 @@ program
 					body += data
 				})
 				.on('end', () => {
-					// setTimeout(() => {
-					// }, 2000)
 					let jsonResponse = JSON.parse(body)
 					const dataRes = jsonResponse.results
-					console.table(dataRes)
 					styles.styleData(dataRes)
-					spinner.stop()
+					spinner.succeed('Popular person data loaded')
 				})
 		})
 
 		request.on('error', (error) => {
 			console.log(error)
+			spinner.succeed('Failed to fetch the persons data')
 		})
 
 		request.end()
